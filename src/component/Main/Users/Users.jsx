@@ -50,6 +50,7 @@ const Users = () => {
   const [filter, setFilter] = useState('all');
   const [search, setSearch] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
+  console.log(selectedUser)
 
   const { data, isLoading } = useGetAllUsersQuery();
   console.log(data);
@@ -230,18 +231,20 @@ const Users = () => {
             </button>
 
             <div className="flex flex-col items-center">
-              <MdBlock size={40} className="text-red-600 mb-4" />
               <div className="w-32 h-32 border rounded-md overflow-hidden">
                 <img
-                  src="https://img.freepik.com/vecteurs-libre/cercle-bleu-utilisateur-blanc_78370-4707.jpg"
+                  src={Url + selectedUser.profilePic}
                   alt={selectedUser.name}
                   className="w-full h-full object-cover"
                 />
               </div>
               <p className="mt-6 text-center text-base">
-                Are you sure you want to{' '}
-                <span className="text-red-600 font-semibold">block</span>{' '}
-                <span className="font-medium">{selectedUser.name}</span>?
+                {' '}
+                <br />
+                <span className="font-medium">{selectedUser.firstName + ' ' + selectedUser.lastName}</span> <br />
+                <span className="font-medium">{selectedUser.email}</span> <br />
+                {selectedUser.status === 'blocked' ? <span className="text-blue-600 font-semibold">unblock</span> : <span className="text-red-600 font-semibold">block</span>}
+
               </p>
 
               <div className="mt-6 flex justify-center gap-4 w-full">
@@ -251,11 +254,11 @@ const Users = () => {
                 >
                   Go Back
                 </button>
-                <button
+                {/* <button
                   className="px-6 py-2 border border-red-500 text-white bg-red-500 rounded hover:bg-red-600"
                 >
                   Confirm
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

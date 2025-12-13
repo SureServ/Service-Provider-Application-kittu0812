@@ -82,9 +82,15 @@ const Settings = () => {
       const res = await updatePassword(formData).unwrap();
       console.log(res);
 
+      if (res) {
+        toast.success(res?.message);
+        setIsModalOpen(false);
+      }
+
 
     } catch (error) {
       console.log(error);
+      toast.error(error?.data?.message);
     }
 
 

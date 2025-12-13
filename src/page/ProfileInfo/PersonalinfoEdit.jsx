@@ -13,6 +13,7 @@ const PersonalinfoEdit = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const { data: userProfile, isLoading, refetch } = useGetUserProfileQuery();
+    const [updateProfile] = useUpdateProfileMutation();
     const user = userProfile;
 
     const [fileList, setFileList] = useState([]);
@@ -28,7 +29,7 @@ const PersonalinfoEdit = () => {
                 email: user.email || "",
             });
             setcontactNumber(user.contactNumber || "");
-            setImageUrl(user.profilePic ? Url +'/'+ user.profilePic : defaultUserImage);
+            setImageUrl(user.profilePic ? Url + '/' + user.profilePic : defaultUserImage);
         }
     }, [user, form]);
 
@@ -45,7 +46,7 @@ const PersonalinfoEdit = () => {
     // ✅ **Handle Form Submission**
 
 
-    const [updateProfile] = useUpdateProfileMutation();
+
     useEffect(() => {
         refetch();
     }, [refetch]);

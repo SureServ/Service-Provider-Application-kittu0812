@@ -51,10 +51,10 @@ const Header = ({ toggleSidebar }) => {
         <Link className="flex items-center gap-2 border border-[#ffff01] p-2 rounded-lg" to={"/settings/personal-info"}>
           <img
             className="w-8 rounded-full"
-            src={user?.profileImageUrl ? Url + user?.profileImageUrl : userImage}
+            src={user?.profilePic ? Url + user?.profilePic : userImage}
             alt="User Profile"
           />
-          <h1 className="">{user?.fullName || "User Name"}</h1>
+          <h1 className="">{user?.firstName || "Admin"}</h1>
         </Link>
 
       </div>

@@ -43,7 +43,21 @@ const categoryApi = baseApi.injectEndpoints({
       invalidatesTags: ["Categories"]
     }),
     // sub categorys api endpoints start
-
+    createSubCategory: builder.mutation({
+      query: ({ formDataToSend, id }) => ({
+        url: `/categories/${id}/sub-category`,
+        method: "POST",
+        body: formDataToSend,
+      }),
+      invalidatesTags: ["Categories"]
+    }),
+    getAllSubCategories: builder.query({
+      query: (id) => ({
+        url: `/categories/parent/${id}`,
+        method: "GET",
+      }),
+      providesTags: ["Categories"]
+    }),
 
   }),
 });
@@ -54,4 +68,8 @@ export const {
   useDeleteCategoryMutation,
   useGetCategoryByIdQuery,
   useUpdateCategoryMutation,
+  // sub categorys api
+  useCreateSubCategoryMutation,
+  useGetAllSubCategoriesQuery
+
 } = categoryApi;

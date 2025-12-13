@@ -1,17 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import { message } from "antd";
-import { useCreateSubCategoryMutation } from "../../redux/features/category/categoryApi";
+import {
+    useCreateSubCategoryMutation,
+    useDeleteCategoryMutation,
+    useGetAllSubCategoriesQuery,
+} from "../../redux/features/category/categoryApi";
+import { useParams } from "react-router-dom";
+import { MdOutlineDeleteForever } from "react-icons/md";
 
 const SubCategory = () => {
+    const { id } = useParams();
+
     const [showModal, setShowModal] = useState(false);
+    const [allCategory, setAllCategory] = useState([]);
 
     const [formData, setFormData] = useState({
         name: "",
         image: null,
     });
 
-    const [createSubCategory, { isLoading }] = useCreateSubCategoryMutation();
+    /* ================= API ================= */
+    const { data, isLoading: isFetching, refetch } = useGetAllSubCategoriesQuery(id);
+    const [deleteCategory] = useDeleteCategoryMutation();
+    console.log(data)
+
+
+    const [createSubCategory, { isLoading }] =
+        useCreateSubCategoryMutation();
+
+    /* ================= EFFECTS ================= */
+    useEffect(() => {
+        if (data?.data?.subCategories) {
+            setAllCategory(data?.data?.subCategories);
+        }
+    }, [data]);
+
 
     /* ================= HANDLERS ================= */
     const openModal = () => {
@@ -37,18 +61,38 @@ const SubCategory = () => {
         }
 
         const payload = new FormData();
-        payload.append("subCategoryName", formData.name);
+        payload.append("categoryName", formData.name);
         payload.append("image", formData.image);
 
         try {
-            const res = await createSubCategory(payload).unwrap();
+            const res = await createSubCategory({
+                id,
+                formDataToSend: payload,
+            }).unwrap();
+
+            console.log(res)
+
             if (res?.statusCode === 201) {
                 message.success(res.message);
                 closeModal();
+                refetch();
             }
         } catch (error) {
             console.error(error);
             message.error("Failed to add sub category");
+        }
+    };
+
+    const handleDeleteCategory = async (category) => {
+        try {
+            const res = await deleteCategory(category._id).unwrap();
+            if (res?.statusCode === 200) {
+                message.success(res.message);
+                refetch();
+            }
+        } catch (error) {
+            console.error(error);
+            message.error("Something went wrong");
         }
     };
 
@@ -62,9 +106,39 @@ const SubCategory = () => {
                     onClick={openModal}
                     className="bg-[#d4c707] text-white px-6 py-3 rounded-full flex items-center gap-2"
                 >
-                    <IoAdd className="text-2xl" /> Add Sub Category
+                    <IoAdd className="text-2xl" />
+                    Add Sub Category
                 </button>
             </div>
+
+            {/* ================= LIST ================= */}
+            {isFetching ? (
+                <p>Loading...</p>
+            ) : (
+                <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6">
+                    {allCategory?.map((sub) => (
+                        <div
+                            key={sub.id}
+                            className="border relative rounded-lg p-4 text-center"
+                        >
+                            <button
+                                onClick={() => handleDeleteCategory(sub)}
+                                className="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-full"
+                            >
+                                <MdOutlineDeleteForever className="text-xl" />
+                            </button>
+                            <img
+                                src={sub.image}
+                                alt={sub.categoryName}
+                                className="w-20 h-20 mx-auto rounded-full object-cover"
+                            />
+                            <p className="mt-3 font-medium">
+                                {sub.categoryName}
+                            </p>
+                        </div>
+                    ))}
+                </div>
+            )}
 
             {/* ================= MODAL ================= */}
             {showModal && (
@@ -74,17 +148,25 @@ const SubCategory = () => {
                             Add Sub Category
                         </h3>
 
-                        <label className="block mb-2">Sub Category Name</label>
+                        <label className="block mb-2">
+                            Sub Category Name
+                        </label>
                         <input
                             type="text"
                             value={formData.name}
+                            placeholder="Enter sub category name"
                             onChange={(e) =>
-                                setFormData({ ...formData, name: e.target.value })
+                                setFormData({
+                                    ...formData,
+                                    name: e.target.value,
+                                })
                             }
                             className="w-full border rounded px-3 py-2 mb-4"
                         />
 
-                        <label className="block mb-2">Sub Category Image</label>
+                        <label className="block mb-2">
+                            Sub Category Image
+                        </label>
                         <input
                             type="file"
                             accept="image/*"
@@ -105,7 +187,9 @@ const SubCategory = () => {
                             disabled={isLoading}
                             className="w-full mt-4 py-2 bg-yellow-500 text-white rounded"
                         >
-                            {isLoading ? "Adding..." : "Add Sub Category"}
+                            {isLoading
+                                ? "Adding..."
+                                : "Add Sub Category"}
                         </button>
 
                         <button

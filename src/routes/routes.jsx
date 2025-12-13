@@ -62,6 +62,7 @@ import BabyCuseSouthingdetails from "../page/BabyCuse/BabyCuseSouthingdetails";
 import Category from "../page/Category/Category";
 import Transactions from "../page/Transactions/Transactions";
 import DashboardHomePage from "../page/DashboardHomePage/DashboardHomePage";
+import SubCategory from "../page/Category/SubCategory";
 
 
 const router = createBrowserRouter([
@@ -86,6 +87,11 @@ const router = createBrowserRouter([
       {
         path: "category",
         element: <Category />,
+      },
+
+      {
+        path: "category/:id",
+        element: <SubCategory />,
       },
 
       {

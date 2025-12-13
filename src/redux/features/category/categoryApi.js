@@ -5,17 +5,17 @@ const categoryApi = baseApi.injectEndpoints({
 
 
     getAllCategories: builder.query({
-      query: () => ({
-        url: "/services/categories",
+      query: ({ page = 1, limit = 5 }) => ({
+        url: `/categories?page=${page}&limit=${limit}`,
         method: "GET",
       }),
       providesTags: ["Categories"]
     }),
     createCategory: builder.mutation({
-      query: ({ data }) => ({
-        url: `/admin/categories`,
+      query: (formDataToSend) => ({
+        url: `/categories/create`,
         method: "POST",
-        body: data,
+        body: formDataToSend,
       }),
       invalidatesTags: ["Categories"]
     }),
@@ -28,29 +28,28 @@ const categoryApi = baseApi.injectEndpoints({
       transformResponse: (response) => response?.data?.attributes,
     }),
     updateCategory: builder.mutation({
-      query: ({ data }) => ({
-        url: `/categories/update`,
-        method: "POST",
+      query: ({ id, data }) => ({
+        url: `/categories/${id}`,
+        method: "PUT",
         body: data,
       }),
       invalidatesTags: ["Categories"]
     }),
     deleteCategory: builder.mutation({
-      query: (id) => {
-        console.log(id)
-        return {
-          url: `/categories/delete/${id}`,
-          method: "POST",
-        };
-      },
+      query: (id) => ({
+        url: `/categories/${id}`,
+        method: "DELETE",
+      }),
       invalidatesTags: ["Categories"]
     }),
+    // sub categorys api endpoints start
+
 
   }),
 });
 
 export const {
-  useGetAllCategoriesQuery, 
+  useGetAllCategoriesQuery,
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
   useGetCategoryByIdQuery,

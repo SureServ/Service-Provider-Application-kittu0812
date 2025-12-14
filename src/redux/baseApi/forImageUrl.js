@@ -1,3 +1,3 @@
-const Url = 'http://10.10.11.87:9368/api/v1'
+const Url = 'https://shadat9368.sobhoy.com'
 
 export default Url

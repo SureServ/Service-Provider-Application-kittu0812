@@ -5,7 +5,7 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     // baseUrl: "https://api.budbox.fun/api/v1",
     // baseUrl: "https://apurbo6000.sobhoy.com/api/v1/admin/v2",
-    baseUrl: "http://10.10.11.87:9368/api/v1",
+    baseUrl: "https://shadat9368.sobhoy.com/api/v1",
     prepareHeaders: (headers, { getState }) => {
       // Retrieve the token from your store or local storage
       const token = getState().auth.token;

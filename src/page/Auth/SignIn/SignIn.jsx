@@ -41,7 +41,7 @@ const SignIn = () => {
         localStorage.setItem("token", res?.accessToken);
 
         toast.success('Login Successfully');
-        navigate("/dashboard-home");
+        navigate("/");
       }
 
       // navigate("/");

@@ -29,7 +29,7 @@ const PersonalinfoEdit = () => {
                 email: user.email || "",
             });
             setcontactNumber(user.contactNumber || "");
-            setImageUrl(user.profilePic ? Url + '/' + user.profilePic : defaultUserImage);
+            setImageUrl(user.profilePic);
         }
     }, [user, form]);
 
@@ -65,8 +65,8 @@ const PersonalinfoEdit = () => {
             const response = await updateProfile(formData).unwrap();
             console.log(response);
 
-            if (response?.code) {
-                message.success(response?.message);
+            if (response) {
+                message.success(response?.message || "Profile updated successfully!");
                 navigate("/settings/personal-info");
             }
 

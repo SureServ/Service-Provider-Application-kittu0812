@@ -32,7 +32,7 @@ const Personalinfo = () => {
 
                     <img
                         className="w-40 h-40 mx-auto border my-10 rounded-full"
-                        src={ user?.profilePic ? Url + user?.profilePic : User_Profile}
+                        src={user?.profilePic}
                         alt="User Profile"
                     />
 

@@ -10,6 +10,21 @@ const settingApi = baseApi.injectEndpoints({
         providesTags: ["Setting"],
       }),
     }),
+    getTramsAndConditions: builder.query({
+      query: () => ({
+        url: "/info/terms-condition",
+        method: "GET",
+        providesTags: ["Setting"],
+      }),
+    }),
+
+    getAboutUs: builder.query({
+      query: () => ({
+        url: "/info/privacy-policy",
+        method: "GET",
+        providesTags: ["Setting"],
+      }),
+    }),
 
     updatePrivacyPolicyAll: builder.mutation({  // ✅ FIXED: Use mutation instead of query
       query: (data) => ({
@@ -39,7 +54,7 @@ const settingApi = baseApi.injectEndpoints({
 
     updateTramsAndConditionsAll: builder.mutation({  // ✅ FIXED: Use mutation instead of query
       query: (data) => ({
-        url: "/general-info/update/terms-and-conditions",
+        url: "/info/terms-condition",
         method: "POST",
         body: data,
       }),
@@ -47,7 +62,7 @@ const settingApi = baseApi.injectEndpoints({
     }),
     updateAboutUs: builder.mutation({  // ✅ FIXED: Use mutation instead of query
       query: (data) => ({
-        url: "/general-info/update/about-us",
+        url: "/info/privacy-policy",
         method: "POST",
         body: data,
       }),
@@ -89,6 +104,8 @@ const settingApi = baseApi.injectEndpoints({
 
 export const {
   useGetAllSettingsQuery,
+  useGetTramsAndConditionsQuery,
+  useGetAboutUsQuery,
   useUpdatePrivacyPolicyAllMutation, // ✅ FIXED: Mutation hook 
   useUpdateTramsAndConditionsAllMutation,
 

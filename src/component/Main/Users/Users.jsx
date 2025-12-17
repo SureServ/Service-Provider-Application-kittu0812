@@ -181,7 +181,7 @@ const Users = () => {
               <div className="flex items-center gap-3 mb-4">
                 <img
                   // "https://img.freepik.com/vecteurs-libre/cercle-bleu-utilisateur-blanc_78370-4707.jpg"
-                  src={Url + user.profilePic}
+                  src={user.profilePic}
                   alt={user.name}
                   className="rounded-full w-12 h-12 object-cover"
                 />

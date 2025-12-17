@@ -68,7 +68,7 @@ import SubCategory from "../page/Category/SubCategory";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <PrivetRoute> <MainLayout /> </PrivetRoute>,
     errorElement: <h1>Error</h1>,
     children: [
       {

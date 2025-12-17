@@ -12,7 +12,7 @@ const PrivetRoute = ({ children }) => {
         return <h1 className='text-3xl font-semibold text-center text-blue-600 h-screen flex items-center justify-center'>Loading...</h1>
     }
 
-    if (!data?.data?.email) {
+    if (!data) {
         return navigate("/auth/login");
     }
 

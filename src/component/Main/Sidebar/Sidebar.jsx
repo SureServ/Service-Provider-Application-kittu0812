@@ -76,8 +76,10 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate("/auth");
+    localStorage.removeItem("user");
     localStorage.removeItem("token");
+
+    window.location.replace(`http://localhost:3030/dashboard-home`);
   };
 
   return (

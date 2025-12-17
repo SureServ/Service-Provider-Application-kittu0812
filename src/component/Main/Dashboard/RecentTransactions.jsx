@@ -76,7 +76,7 @@ const RecentTransactions = () => {
             <div className="min-w-[600px] flex justify-between items-center bg-white rounded-md px-5 py-4 shadow-sm">
               {/* User Info */}
               <div className="flex items-center gap-3">
-                <Avatar src={Url + user?.profilePic} size="large" />
+                <Avatar src={user?.profilePic} size="large" />
                 <span className="font-medium text-gray-800">{user?.firstName + user?.lastName}</span>
               </div>
 

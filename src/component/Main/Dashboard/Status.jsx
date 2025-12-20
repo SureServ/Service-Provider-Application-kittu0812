@@ -42,7 +42,7 @@ const Status = () => {
       <div className="bg-white px-5 py-10 rounded-lg shadow-[0_0_10px_0_rgba(0,0,0,0.1)] flex items-center justify-between">
         <div>
           <p className="text-gray-500">Total Revenue</p>
-          <h2 className="text-3xl font-semibold">{data?.totalRevenue}$</h2>
+          <h2 className="text-3xl font-semibold">{data?.totalRevenue.toFixed(2)}$</h2>
         </div>
         <TbShoppingCartDollar className="text-4xl text-[#414141]" />
       </div>

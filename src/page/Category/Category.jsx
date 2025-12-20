@@ -41,7 +41,9 @@ const Category = () => {
     useEffect(() => {
         if (data?.data?.categories) {
             setCategories(data.data.categories);
+            setId(data.data.categories[0]?._id);
         }
+
     }, [data]);
 
     if (isLoading) return <div>Loading...</div>;

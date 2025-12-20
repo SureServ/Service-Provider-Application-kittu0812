@@ -105,14 +105,14 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
           ))}
         </ul>
 
+
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-1 font-bold px-10 py-4 text-black  ml-6 mt-5"
+          className="flex fixed bottom-5 left-3 items-center gap-2 px-10 ml-5 mt-5"
         >
           <IoIosLogOut className="size-8  p-1 text-[#fff050] rounded-md" />
           <span className="text-[#fff050] ">Logout</span>
         </button>
-
       </div>
 
       {/* Mobile Sidebar */}
@@ -143,17 +143,17 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar }) => {
           ))}
         </ul>
 
-        <button
-          onClick={() => {
-            setShowModal(true);
-            toggleSidebar();
-          }}
-          className="flex items-center gap-2 px-10 ml-5 mt-5"
-        >
-          <IoIosLogOut className="size-8 p-1 text-[#fff000] rounded-md" />
-          <span className="text-[#fff000] ">Logout</span>
-        </button>
       </div>
+      <button
+        onClick={() => {
+          setShowModal(true);
+          toggleSidebar();
+        }}
+        className="flex fixed bottom-5  left-3 items-center gap-2 px-10 ml-5 mt-5"
+      >
+        <IoIosLogOut className="size-8 p-1 text-[#fff000] rounded-md" />
+        <span className="text-[#fff000] ">Logout</span>
+      </button>
 
       {/* Confirmation Modal */}
       {showModal && (

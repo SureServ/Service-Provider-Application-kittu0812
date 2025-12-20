@@ -9,8 +9,11 @@ import {
 import { useParams } from "react-router-dom";
 import { MdOutlineDeleteForever } from "react-icons/md";
 
-const SubCategory = () => {
-    const { id } = useParams();
+const SubCategory = ({ id, subCategoryName }) => {
+
+    if (!id) {
+        return <p className=" py-10 text-2xl text-center text-red-500">Please Select a category to view its subcategories.</p>;
+    }
 
     const [showModal, setShowModal] = useState(false);
     const [allCategory, setAllCategory] = useState([]);
@@ -97,17 +100,16 @@ const SubCategory = () => {
     };
 
     return (
-        <div className="lg:p-6 py-4">
+        <div className=" py-5">
             {/* ================= HEADER ================= */}
             <div className="flex justify-between items-center mb-6">
-                <h2 className="text-3xl font-semibold">Sub Category</h2>
+                <h2 className="text-3xl font-semibold">Sub Category {subCategoryName}</h2>
 
                 <button
                     onClick={openModal}
                     className="bg-[#d4c707] text-white px-6 py-3 rounded-full flex items-center gap-2"
                 >
-                    <IoAdd className="text-2xl" />
-                    Add Sub Category
+                    <IoAdd className="text-3xl" /> Add Sub Category
                 </button>
             </div>
 

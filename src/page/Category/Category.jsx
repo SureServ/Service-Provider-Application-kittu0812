@@ -11,6 +11,7 @@ import {
 import { message } from "antd";
 import { Link } from "react-router-dom";
 import { MdOutlineDeleteForever } from "react-icons/md";
+import SubCategory from "./SubCategory";
 
 const Category = () => {
     const [page, setPage] = useState(1);
@@ -20,6 +21,8 @@ const Category = () => {
     const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
     const [updateCategory] = useUpdateCategoryMutation();
     const [deleteCategory] = useDeleteCategoryMutation();
+    const [id, setId] = useState(null);
+    const [subCategoryName, setSubCategoryName] = useState("");
 
     const totalPage = data?.data?.pagination?.pages || 0;
 
@@ -161,7 +164,7 @@ const Category = () => {
                 <h2 className="text-3xl font-semibold">Category Management</h2>
 
                 <div className="flex gap-3 flex-wrap items-center">
-                    <div className="flex items-center border border-yellow-500 rounded-full px-3 py-2 w-full md:w-[260px] bg-white">
+                    <div className="flex items-center border border-yellow-500 rounded-full px-3 py-3 w-full md:w-[260px] bg-white">
                         <FaSearch className="text-yellow-600 mr-2" />
                         <input
                             type="text"
@@ -182,11 +185,11 @@ const Category = () => {
             </div>
 
             {/* ================= GRID ================= */}
-            <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6">
                 {filteredCategories?.map((category) => (
                     <div
                         key={category._id}
-                        className="relative min-h-48 border border-[#fff000] bg-white rounded-lg shadow"
+                        className={`relative min-h-20 flex items-center justify-center border border-[#fff000] bg-white rounded-lg shadow ${id === category._id ? 'ring-4 ring-yellow-300' : ''}`}
                     >
                         <button
                             onClick={() => openEditModal(category)}
@@ -201,9 +204,11 @@ const Category = () => {
                             <MdOutlineDeleteForever className="text-xl" />
                         </button>
 
-                        <Link
-                            to={`/category/${category._id}`} className="p-4 flex flex-col items-center">
-                            <div className="w-20 h-20 border rounded-full mb-4 overflow-hidden">
+                        <div onClick={() => (
+                            setId(category._id),
+                            setSubCategoryName(category.categoryName)
+                        )} className="p-4 cursor-pointer flex flex-col items-center">
+                            <div className="w-20 h-20 border rounded-full mb-2 overflow-hidden">
                                 <img
                                     src={category.image}
                                     alt={category.categoryName}
@@ -213,90 +218,99 @@ const Category = () => {
                             <h3 className="text-lg font-semibold">
                                 {category.categoryName}
                             </h3>
-                        </Link>
+                        </div>
                     </div>
                 ))}
             </div>
 
             {/* ================= PAGINATION ================= */}
-            {totalPage > 1 && (
-                <div className="flex justify-end items-center gap-2 mt-8 flex-wrap">
-                    <button
-                        disabled={page === 1}
-                        onClick={() => setPage(page - 1)}
-                        className="px-3 py-1 border rounded disabled:opacity-50"
-                    >
-                        Previous
-                    </button>
-
-                    {renderPageNumbers()}
-
-                    <button
-                        disabled={page === totalPage}
-                        onClick={() => setPage(page + 1)}
-                        className="px-3 py-1 border rounded disabled:opacity-50"
-                    >
-                        Next
-                    </button>
-                </div>
-            )}
-
-            {/* ================= MODAL ================= */}
-            {(editingCategory || showAddModal) && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h3 className="text-xl font-semibold mb-4">
-                            {editingCategory ? "Edit Category" : "Add Category"}
-                        </h3>
-
-                        <label className="block mb-2">Category Title</label>
-                        <input
-                            type="text"
-                            value={formData.name}
-                            onChange={(e) =>
-                                setFormData({ ...formData, name: e.target.value })
-                            }
-                            className="w-full border rounded px-3 py-2 mb-4"
-                        />
-
-                        <label className="block mb-2">Category Image</label>
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleCategoryImageChange}
-                            className="w-full border rounded px-3 py-2"
-                        />
-
-                        {formData.image && (
-                            <img
-                                src={
-                                    formData.image instanceof File
-                                        ? URL.createObjectURL(formData.image)
-                                        : formData.image
-                                }
-                                alt="Preview"
-                                className="w-20 h-20 mt-3 rounded object-cover"
-                            />
-                        )}
-
+            {
+                totalPage > 1 && (
+                    <div className="flex justify-end items-center gap-2 mt-8 flex-wrap">
                         <button
-                            onClick={handleSave}
-                            className="w-full mt-4 py-2 bg-yellow-500 text-white rounded"
+                            disabled={page === 1}
+                            onClick={() => setPage(page - 1)}
+                            className="px-3 py-1 border rounded disabled:opacity-50"
                         >
-                            {editingCategory ? "Save Changes" : "Add Category"}
-                            {isCreating ? " ..." : ""}
+                            Previous
                         </button>
 
+                        {renderPageNumbers()}
+
                         <button
-                            onClick={closeModal}
-                            className="w-full mt-2 py-2 border border-red-400 text-red-600 rounded"
+                            disabled={page === totalPage}
+                            onClick={() => setPage(page + 1)}
+                            className="px-3 py-1 border rounded disabled:opacity-50"
                         >
-                            Cancel
+                            Next
                         </button>
                     </div>
-                </div>
-            )}
-        </div>
+                )
+            }
+
+            {/* ================= MODAL ================= */}
+            {
+                (editingCategory || showAddModal) && (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+                        <div className="bg-white p-6 rounded-lg w-full max-w-md">
+                            <h3 className="text-xl font-semibold mb-4">
+                                {editingCategory ? "Edit Category" : "Add Category"}
+                            </h3>
+
+                            <label className="block mb-2">Category Title</label>
+                            <input
+                                type="text"
+                                value={formData.name}
+                                onChange={(e) =>
+                                    setFormData({ ...formData, name: e.target.value })
+                                }
+                                className="w-full border rounded px-3 py-2 mb-4"
+                            />
+
+                            <label className="block mb-2">Category Image</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleCategoryImageChange}
+                                className="w-full border rounded px-3 py-2"
+                            />
+
+                            {formData.image && (
+                                <img
+                                    src={
+                                        formData.image instanceof File
+                                            ? URL.createObjectURL(formData.image)
+                                            : formData.image
+                                    }
+                                    alt="Preview"
+                                    className="w-20 h-20 mt-3 rounded object-cover"
+                                />
+                            )}
+
+                            <button
+                                onClick={handleSave}
+                                className="w-full mt-4 py-2 bg-yellow-500 text-white rounded"
+                            >
+                                {editingCategory ? "Save Changes" : "Add Category"}
+                                {isCreating ? " ..." : ""}
+                            </button>
+
+                            <button
+                                onClick={closeModal}
+                                className="w-full mt-2 py-2 border border-red-400 text-red-600 rounded"
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                )
+            }
+
+            <div>
+                <SubCategory id={id} subCategoryName={subCategoryName} />
+            </div>
+
+        </div >
     );
 };
 

@@ -12,6 +12,7 @@ import { message } from "antd";
 import { Link } from "react-router-dom";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import SubCategory from "./SubCategory";
+import Swal from "sweetalert2";
 
 const Category = () => {
     const [page, setPage] = useState(1);
@@ -147,11 +148,30 @@ const Category = () => {
     const handleDeleteCategory = async (categoryId) => {
 
         try {
-            const res = await deleteCategory(categoryId?._id).unwrap();
-            if (res?.statusCode === 200) {
-                message.success(res.message);
-                refetch();
-            }
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    const res = await deleteCategory(categoryId?._id).unwrap();
+                    if (res?.statusCode === 200) {
+                        message.success(res.message);
+                        refetch();
+                    }
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "Your file has been deleted.",
+                        icon: "success"
+                    });
+                }
+            });
+
+
         } catch (error) {
             console.error(error);
             message.error("Something went wrong");

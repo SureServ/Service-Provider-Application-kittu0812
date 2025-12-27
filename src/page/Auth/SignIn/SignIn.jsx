@@ -49,7 +49,7 @@ const SignIn = () => {
 
     } catch (error) {
       console.log(error);
-      toast.error("Something went wrong");
+      toast.error(error?.data?.message || "Something went wrong");
     }
   };
 
